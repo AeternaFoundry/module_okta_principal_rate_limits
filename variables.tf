@@ -15,5 +15,13 @@ EOT
     default_concurrency_percentage = optional(number)
     default_percentage             = optional(number)
   }))
+  validation {
+    condition = alltrue([
+      for k, v in var.principal_rate_limits : (
+        contains(["OAUTH_CLIENT", "SSWS_TOKEN"], v.principal_type)
+      )
+    ])
+    error_message = "must be one of: \"OAUTH_CLIENT\", \"SSWS_TOKEN\""
+  }
 }
 
